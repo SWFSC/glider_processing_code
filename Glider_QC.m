@@ -16,9 +16,9 @@ title("ABC values")
 figure(2) 
 plot(avg_abc,-zbins(2:end))
 title("Ave ABC by depth")
-%% Make a table of the highest 50 ABC values to see if there are bad data 
+%% Make a table of the highest 200 ABC values to see if there are bad data 
 
-[mABC, idx] = maxk(data(:,5),50);  % find the highest 50 values of ABC
+[mABC, idx] = maxk(data(:,5),200);  % find the highest 200 values of ABC
 
 maxABC = data(idx,:); % grab the index from the data
 
@@ -26,20 +26,32 @@ dat = datetime(maxABC(:,1),'ConvertFrom','datenum'); % make the date readable
 
 maxABC = array2table(maxABC,"VariableNames",{'datenum','Lat','Lon','Depth','ABC'}); % convert the data to a table
 maxABC.date = dat; % add the date to the table
+maxABC = sortrows(maxABC,"date","ascend"); % sort rows by date
 
 mean(data(:,5),'omitnan') % get the nanmean to see how much variability is from the max
-%% Make a table of the highest 50 ABC values if there are bad bottom data
+
+%% Make a table of values higher than 1e4 for bad values
+abc4= (data(:,5)>=1e-4); % find values greater than 1e-4
+mabc= data(abc4,:); % pull the index of the greater values
+dit = datetime(mabc(:,1),'ConvertFrom','datenum'); % make the date readable
+
+mabc = array2table(mabc,"VariableNames",{'datenum','Lat','Lon','Depth','ABC'}); % convert the data to a table
+mabc.date = dit; % add the date to the table
+mabc = sortrows(mabc,"date","ascend"); % sort by date
+
+%% Make a table of the highest 200 ABC values if there are bad bottom data
 
 mdep = find(data(:,4)> 300); % find data deeper than 300m
 
 dep300 = data(mdep,:); % create subdata of greater than 300m
 
-[md, idx2] = maxk(dep300(:,5),50); % find the highest 50 values of ABC
+[md, idx2] = maxk(dep300(:,5),200); % find the highest 200 values of ABC
 maxABC300 = dep300(idx2,:); % grab the index from the data
 
 dot = datetime(maxABC300(:,1),'ConvertFrom','datenum'); 
 maxABC300 = array2table(maxABC300,"VariableNames",{'datenum','Lat','Lon','Depth','ABC'}); % convert the data to a table
 maxABC300.date = dot; % add the date to the table
+maxABC300 = sortrows(maxABC300,"date","ascend"); % sort rows by date
 %% Map the data
 
 % %this takes too much to load at the moment. Still figuring this out.
