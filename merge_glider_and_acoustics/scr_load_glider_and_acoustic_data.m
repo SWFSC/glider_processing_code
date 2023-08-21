@@ -117,6 +117,7 @@ c.Label.String = ' Log ABC';
 xlabel('Profile number')
 ylabel('Depth')
 title('Log acoustics')
+ylim([-26 -8])
 
 figure(3)
 plot(avg_profile_num,num_pings_profil,'.')

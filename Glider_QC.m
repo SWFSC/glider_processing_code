@@ -2,6 +2,15 @@
 % This uses the 'data' variable after scr_load_glider_and_EK60_azfp_data.m
 % 2/7/2022 A Cossio
 
+%% If you want to use just survey data or skip this step
+d_ST = '2022-12-06 16:00'; % survey start time and date
+d_ED = '2023-01-11 10:44'; % survey end time and date
+date_ST = datenum(datetime(d_ST,'InputFormat', 'yyyy-MM-dd HH:mm'));
+date_ED = datenum(datetime(d_ED,'InputFormat','yyyy-MM-dd HH:mm'));
+
+sub_data = data(:,1) > date_ST & data(:,1) < date_ED; % select between the survey dates only
+
+data = data(sub_data,:); % subset of just survey data
 %% Plot the ABC values over time
 
 figure (1) 
