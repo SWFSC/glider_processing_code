@@ -20,11 +20,13 @@ a2 = yline(0.0001,'g'); M2 = "10e-4"; % 10e-4 line
 legend([a1,a2], [M1, M2]) 
 %legend(a2, M2) 
 title("ABC values")
+
 %% Plot the ABC by depth
 
 figure(2) 
 plot(avg_abc,-zbins(2:end))
 title("Ave ABC by depth")
+
 %% Make a table of the highest 200 ABC values to see if there are bad data 
 
 [mABC, idx] = maxk(data(:,5),200);  % find the highest 200 values of ABC
@@ -40,8 +42,9 @@ maxABC = sortrows(maxABC,"date","ascend"); % sort rows by date
 mean(data(:,5),'omitnan') % get the nanmean to see how much variability is from the max
 
 %% Make a table of values higher than 1e4 for bad values
-abc4= (data(:,5)>=1e-4); % find values greater than 1e-4
-mabc= data(abc4,:); % pull the index of the greater values
+
+abc4 = (data(:,5)>=1e-4); % find values greater than 1e-4
+mabc = data(abc4,:); % pull the index of the greater values
 dit = datetime(mabc(:,1),'ConvertFrom','datenum'); % make the date readable
 
 mabc = array2table(mabc,"VariableNames",{'datenum','Lat','Lon','Depth','ABC'}); % convert the data to a table
@@ -61,6 +64,10 @@ dot = datetime(maxABC300(:,1),'ConvertFrom','datenum');
 maxABC300 = array2table(maxABC300,"VariableNames",{'datenum','Lat','Lon','Depth','ABC'}); % convert the data to a table
 maxABC300.date = dot; % add the date to the table
 maxABC300 = sortrows(maxABC300,"date","ascend"); % sort rows by date
+
+%% Use gridded data instead of the full data
+% work in progress
+
 %% Map the data
 
 % %this takes too much to load at the moment. Still figuring this out.
@@ -73,11 +80,12 @@ maxABC300 = sortrows(maxABC300,"date","ascend"); % sort rows by date
 % colorcet('BWG')
 % title('Log ABC')
 
+
 % With the Mapping toolbox bubble plot the data
 figure(4)
-
 geobubble(gridded_glider_abc.glider_latitude,gridded_glider_abc.glider_longitude,mean(gridded_glider_abc.ABC,'omitnan'))
 title('bubble plot of 125kHz ABC')
+
 % Figure with more resolution of the ABC bubbles
 figure(5)
 bubblechart(gridded_glider_abc.glider_latitude,-gridded_glider_abc.glider_longitude,mean(gridded_glider_abc.ABC,'omitnan'))

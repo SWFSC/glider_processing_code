@@ -15,17 +15,17 @@ mn_lons = nan(1,ln_uni_dates);
 for i = 1:ln_uni_dates
 aa = find(dates == uni_dates(i));
 
-if length(aa)<2
-    binned = zeros(sz_zbins(2)-1,1); % added 2/13/20 had to add -1 so bins were even
-    mn_lats(i) = mean(lats(aa));
-    mn_lons(i) = mean(lons(aa));
-    int_data(:,i) = binned';
-else
+    if length(aa)<2
+      binned = zeros(sz_zbins(2)-1,1); % added 2/13/20 had to add -1 so bins were even
+      mn_lats(i) = mean(lats(aa));
+      mn_lons(i) = mean(lons(aa));
+      int_data(:,i) = binned';
+    else
         mn_lats(i) = mean(lats(aa));
         mn_lons(i) = mean(lons(aa));
         %binned = interp1(depths(aa),acoustic_data(aa),zbins,'nearest'); % replaced with following line
 		binned = binit(depths(aa),acoustic_data(aa),zbins, @nanmean);
         int_data(:,i) = binned';
-end
+    end
 end
 out = int_data;
