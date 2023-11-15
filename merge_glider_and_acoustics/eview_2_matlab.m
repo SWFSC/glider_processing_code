@@ -3,7 +3,7 @@ function [out, mn_lats, mn_lons] = eview_2_matlab( dates, depths, acoustic_data,
 % edited 2/13/20 - changed interp1 to binit. Requires function binit.m
 uni_dates= unique(dates); % find unique dates
 
-ln_uni_dates = length(uni_dates); % lenght of unique dates
+ln_uni_dates = length(uni_dates); % length of unique dates
 
 zbins = bins; % set bins to zbins
 sz_zbins = size(zbins); % get the size of zbins

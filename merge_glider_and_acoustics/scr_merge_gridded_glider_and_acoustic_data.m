@@ -26,7 +26,7 @@ bd_bottom = find(max(log10(gridded_glider_abc.gd_prfl_abc(400:end,:)))>-5); % Fi
 abc = gridded_glider_abc.gd_prfl_abc;
 abc(400:end,bd_bottom) = NaN;
 
-gridded_glider_abc.ABC = abc; % These are the gridded nascs to be used in analyses
+gridded_glider_abc.ABC = abc; % These are the gridded ABC to be used in analyses
 
  %%% Now find profiles that are linked between glider and azfp
 % was from scr_collapse NaN Profiles

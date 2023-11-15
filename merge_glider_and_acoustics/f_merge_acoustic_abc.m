@@ -38,7 +38,7 @@ for i = 1:length(files)
 end
 
 hrs = datevec(alldata.Time_S,'HH:MM:SS.FFF');
-ymd = datevec(datetime(alldata.Date_S,'ConvertFrom', 'yyyymmdd')); 
+ymd = datevec(datetime(alldata.Date_S,'ConvertFrom', 'yyyymmdd'));
 
 acousticdtnum = datenum([ymd(:,1:3) hrs(:,4:6)]);
 
