@@ -9,7 +9,7 @@
 %needs to contain "data_processed" data
 %load ('C:\glider_data\amlr02\SOCIB\MAT_FILES\AMLR02_data_Cali_cruisin_5_24.mat')
 
-fn = 'amlr01'; % Change glider name as needed
+fn = 'amlr04'; % Change glider name as needed
 
 yrs = datestr(epoch2datenum(data_processed.time),'yyyymmdd') ; %date string for depth files
 
@@ -57,7 +57,7 @@ depth_table = rmmissing(depth_table); % remove missing values and NaNs
 %below. 6070 would be 6070 entries
 % TODO add this to header of the writetable
 %EVBD 3 8.0.73.30735			
-% 6070	
+%500000	
 
 
 
@@ -107,6 +107,7 @@ writetable(depth_table(X(i):X(i+1)-1,:), sprintf('%sEV%d.depth.evl',fn, i), 'Fil
 writetable(depth_table(X(i):end,:), sprintf('%sEV%d.depth.evl',fn, i), 'FileType','text','Delimiter','tab')
  end
 end
-%EVBD 3 8.0.73.30735	%Copy this header then below is the count of entries must equal the number below.		
-% 6070	
+%Copy this header then below is the count of entries must equal the number below.
+%EVBD 3 8.0.73.30735			
+%500000	
 
