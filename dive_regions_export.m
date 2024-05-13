@@ -4,6 +4,8 @@
 % Use the mat file from SOCIB to get the profile index numbers, start and end time for each profile
 % requires epoch2datenum.m
 % AMC 2/8/22 initial
+% AMC 4/23/24 added conversion to timetable because seconds were missing
+% when just using table
 
 
 G3 = [data_processed.time data_processed.profile_index data_processed.profile_direction data_processed.longitude data_processed.latitude ...
@@ -32,6 +34,7 @@ stat_dn = stat_dwn(stat_dwn.GroupCount > 15,:); % only profiles with at least 15
 % create table with profile #, min lon, max lon, min lat, max lat, date start and date end 
 down_prfl = table(stat_dn.profile, stat_dn.min_lon, stat_dn.max_lon, stat_dn.min_lat, stat_dn.max_lat, stat_dn.date_s, stat_dn.date_e,'VariableNames',{'profile','min_lon','max_lon','min_lat','max_lat','start.time','end.time'});
 
+down = table2timetable(down_prfl); % convert down_prfl to a timetable
 
 
 %% Up profiles
@@ -52,7 +55,9 @@ stat_u = stat_up(stat_up.GroupCount > 15,:); % only profiles with at least 15 co
 % create table with profile #, min lon, max lon, min lat, max lat, date start and date end 
 up_prfl = table(stat_u.profile, stat_u.min_lon, stat_u.max_lon, stat_u.min_lat, stat_u.max_lat, stat_u.date_s, stat_u.date_e,'VariableNames',{'profile','min_lon','max_lon','min_lat','max_lat','start.time','end.time'});
 
+up = table2timetable(up_prfl); % convert down_prfl to a timetable
+
 %% Write out the tables to csv
 % Change file name as needed
-writetable(down_prfl,'AMLR04_down_profile.csv') %write table to csv file for use with R code
-writetable(up_prfl,'AMLR04_up_profile.csv') 
+writetimetable(down,'AMLR0X_down_profile.csv') %write timetable to csv file for use with R code
+writetimetable(up,'AMLR0X_up_profile.csv') 
