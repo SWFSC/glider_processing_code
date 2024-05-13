@@ -14,7 +14,7 @@ function [CFS] = calculate_cf_glider(LF_fname)
 
 
 lf = load(LF_fname)' ;% krill length-frequencies by cluster
-load TS_krill_length_values_alt_fin.mat % TS for [38 120 200 67 70 74 82 91 99 108 120 125]
+load 'C:\Github\glider_processing_code\SDWBA_conversion_factors\Step10\TS_krill_length_values_alt_fin.mat' % TS for [38 120 200 67 70 74 82 91 99 108 120 125]
 c = 1456; % sound speed
 freq = [38 67.5 70 74 82 91 99 108 120 125]*1e3; % acoustic frequency
 k = (2*pi.*freq)/c;                   % acoustic wavenumber
@@ -91,5 +91,6 @@ CF_MEAN = CF_SDWBA_MEAN'/1e+3 ;   % Convert CF to units of m^2/m^2
 
 a = [38; 67.5; 70; 74; 82; 91; 99; 108; 120; 125];
 ABC_CFS = [a CF_MEAN];
-CFS = table(ABC_CFS);
+CFS = array2table(ABC_CFS,"VariableNames",{'freq' 'West' 'EI' 'South'});
+
 
