@@ -43,6 +43,12 @@ colorbar
 f = colorbar ;
 f.Label.String =' log10 ABC' ;
 
+%% 
+% Bubble plot of density
+figure(2)
+geobubble(gridded_glider_abc.glider_latitude,gridded_glider_abc.glider_longitude,mean(gridded_glider_abc.ABC*CF,'omitnan'),'SizeLimits',[0,20])
+title('bubble plot of 120kHz density gm2')
+
 %% subplots
 % subplot(3,1,1)
 % ax(1)=pcolor([1:length(gridded_glider_abc.num_pings_profil_gd)],-1*gridded_glider_abc.zbins_gd(2:end),log10(clean_125));
@@ -78,15 +84,17 @@ f.Label.String =' log10 ABC' ;
 % f.Label.String=' log10 ABC -- 38 kHz';
 
 
-%%
+%% Density and biomass estimates
 nasc_int = sum(clean,"omitnan");
 %nasc_int = sum(clean(2:201,3:end),"omitnan"); % why remove the first 2
 %dives?
 %nasc_int(nasc_int==0) = NaN; % amc 2/2/22 could also be an issue with schools
 gm2 = nasc_int*CF;
+gm2_std = std(gm2) % standard deviation
+gm2_ste = std(gm2)/sqrt(length(gm2)) % standard error
 mean_gm2 = mean(gm2,"omitnan")
 %biomassCS = (mean_gm2*3.3e+9)/1.0e+6 %  area of Cape Shirreff survey
-biomassBS = (mean_gm2*9.0e+9)/1.0e+6 %  area of Bransfield survey
+biomassBS = (mean_gm2*9.0e+9)/1.0e+6 %  area of Bransfield surveyhel
 
 
 

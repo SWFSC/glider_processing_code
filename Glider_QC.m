@@ -24,8 +24,10 @@ title("ABC values")
 %% Plot the ABC by depth
 
 figure(2) 
-plot(avg_abc,-zbins(2:end))
+plot(nmean(prfl_abc,2,"omitnan"),-zbins(2:end))
 title("Ave ABC by depth")
+ylabel('depth (m)')
+xlabel('average ABC (m2 m-2)')
 
 %% Make a table of the highest 200 ABC values to see if there are bad data 
 
@@ -83,7 +85,7 @@ maxABC300 = sortrows(maxABC300,"date","ascend"); % sort rows by date
 
 % With the Mapping toolbox bubble plot the data
 figure(4)
-geobubble(gridded_glider_abc.glider_latitude,gridded_glider_abc.glider_longitude,mean(gridded_glider_abc.ABC,'omitnan'))
+geobubble(gridded_glider_abc.glider_latitude,gridded_glider_abc.glider_longitude,mean(gridded_glider_abc.ABC*CF,'omitnan'))
 title('bubble plot of 125kHz ABC')
 
 % Figure with more resolution of the ABC bubbles
