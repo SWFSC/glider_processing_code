@@ -41,7 +41,7 @@ int_abc=int_abc_in;
 
 %Convert the groups where there are data back to numbers
 
-llgrid=[-62.0:0.1:-56.8];
+llgrid=[-62.0:0.2:-56.8];
 ltgrid=[-64:0.1:-62];
 
 [xigrid,yigrid] = meshgrid(llgrid,ltgrid);

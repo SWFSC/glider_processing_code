@@ -2,13 +2,16 @@
 # Last modified 2 March 2020 by Haley Viehman
 
 # User definitions:
-dive.times = read.csv('C:/Users/Aerd/Documents/R/EchoviewR_work/AMLR01_down_profile.csv',stringsAsFactors=F,header=T) #  generate the data frame with the start and end dates & times of each dive
-  dive.times$start.time=lubridate::dmy_hms(dive.times$start.time)
-  dive.times$end.time=lubridate::dmy_hms(dive.times$end.time)
-reg.class = 'Dive' # region class name to assign to the dive regions
+dive.times = read.csv('C:/Work/calanus/calanus_down_profile.csv',stringsAsFactors=F,header=T) #  generate the data frame with the start and end dates & times of each dive
+  dive.times$start.time=lubridate::as_datetime(as.character(dive.times$start.time), format=c('%m/%d/%Y %H:%M:%S'))
+  dive.times$end.time=lubridate::as_datetime(as.character(dive.times$end.time), format=c('%m/%d/%Y %H:%M:%S'))
+#  dive.times$start.time=lubridate::dmy_hms(dive.times$start.time)  
+#  dive.times$end.time=lubridate::dmy_hms(dive.times$end.time)
+ reg.class = 'Dive' # region class name to assign to the dive regions
+#reg.class = 'Climb' # region class name to assign to the climb regions
 start.depth = -1 # starting depth for the regions
 end.depth = 1000 # ending depth for the regions (make sure it spans the water column)
-save.path = 'C:/Users/Aerd/Documents/R/EchoviewR_work/echoview/' # path to save the resulting .evr region file to
+save.path = 'C:/Work/calanus/' # path to save the resulting .evr region file to
 
 # Number of regions to create
 n.reg = nrow(dive.times) 
