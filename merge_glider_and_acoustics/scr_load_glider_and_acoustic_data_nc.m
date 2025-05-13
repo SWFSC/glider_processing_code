@@ -1,13 +1,16 @@
 %--------------------------------------------------------------
-% scr_load_glider_and_acoustic_data.m
+% scr_load_glider_and_acoustic_data_nc.m
 % 
-% Load processed Slocum G3 glider data. 
+% Load processed Slocum G3 glider data. Match acoustic data with glider
+% data. Combine them. 
 %  
 % C. Reiss, 2018-08-22 
 % modified by G. Cutter
 % rewritten by CREISS to simplify everything we are doing
 % A Cossio 2/13/2023 cleaned up
 % A Cossio 4/24/25 converted to use nc file from pyglider
+% A Cossio 5/12/25 changed profile indexing to use nc profiles, not create
+% them
 %--------------------------------------------------------------
 
 %% Load glider data produced from Pyglider. There will be two 
@@ -15,7 +18,7 @@
 clear
 fprintf('[f_load_] - Preparing to load glider data.\n');
 
-[INFILE, INPATH] = uigetfile('*.nc;*.*', 'Select pyglider sci nc files.','MultiSelect', 'off');
+[INFILE, INPATH] = uigetfile('*.nc;*.*', 'Select pyglider delayed-sci.nc files.','MultiSelect', 'off');
 
 fn = fullfile(INPATH,INFILE);
 ni = ncinfo(fn);
@@ -24,7 +27,7 @@ for i=1:length(ni.Variables)
     data_processed.(vn) = ncread(fn, vn);  % The result is a structure 
 end
 
-[INFILE1, INPATH1] = uigetfile('*.nc;*.*', 'Select pyglider grid-delayed nc files.','MultiSelect', 'off');
+[INFILE1, INPATH1] = uigetfile('*.nc;*.*', 'Select pyglider grid-delayed-5m.nc files.','MultiSelect', 'off');
 
 fn1 = fullfile(INPATH1,INFILE1);
 ni1 = ncinfo(fn1);
@@ -61,7 +64,7 @@ uni_dates = unique(data(:,1));
 % CHANGE BIN SIZES ACCORDINGLY
 
 % zbins=[0:1:1005];  %1m bins
-zbins = [0:5:1005]; %5m bins
+zbins = [0:5:1100]; %5m bins
 
 % Now bin and create profiles
 % [out mn_lats mn_lons] = EVIEW_2_MATLAB( dates, depths, acoustic_data, lats, lons, bins)
@@ -76,16 +79,12 @@ data_processed.depth data_processed.pitch data_processed.roll];
 % number below.
 
 %%% Here is the conversion of the useful time chunks to datenumber
- 
-down_prfiles = find(G3_AZFP_TIME_1(:,3)>0); %profile direction
-round_down_prfiles = ceil(G3_AZFP_TIME_1(down_prfiles,2)); %profile index
 
-profile_index2(down_prfiles) = round_down_prfiles;
+full_prfl = G3_AZFP_TIME_1((mod(G3_AZFP_TIME_1(:,2),1) == 0),:); % subset only dives and climbs (integers), not inflections
+isodd = rem(full_prfl(:,2),2) == 1; % find odd profile_index (dives)
+subset = full_prfl(isodd,:); % subset odd profile_index (dives)
 
-dnyo = find(profile_index2 > 0);
-subset = G3_AZFP_TIME_1(dnyo,:);
-
-glider_datenum1 = epoch2datenum(subset(:,1)) ;
+glider_datenum1 = epoch2datenum(subset(:,1)) ; %extract dates and convert to datenum
 
  %%
  %Now find the elements of the glider dates that match the nearest

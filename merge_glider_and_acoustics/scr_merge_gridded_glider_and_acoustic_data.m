@@ -70,6 +70,9 @@ gridded_glider_abc.glider_oxygen_saturation = new_data_gridded.oxygen_saturation
 gridded_glider_abc.glider_pressure = new_data_gridded.pressure(IND,:)'; % Pressure from the CTD
 gridded_glider_abc.glider_salinity = new_data_gridded.salinity(IND,:)'; % Salinity
 gridded_glider_abc.glider_temperature = new_data_gridded.temperature(IND,:)'; % Temperature
+% gridded_glider_abc.glider_par = new_data_gridded.par(IND,:)'; % PAR
+% add other sensors as needed
+
 
 % Save the gridded_glider_abc as a mat file for later use. 
 save('gridded_AMLR01_AZFP_ABC_Apr7_2020.mat', 'gridded_glider_abc')
