@@ -16,7 +16,7 @@ for i = 1:ln_uni_dates
 aa = find(dates == uni_dates(i));
 
     if length(aa)<2
-      binned = zeros(sz_zbins(2)-1,1); % added 2/13/20 had to add -1 so bins were even
+      binned = nan(sz_zbins(2)-1,1); % added 2/13/20 had to add -1 so bins were even, changed from zeroes to nan
       mn_lats(i) = mean(lats(aa));
       mn_lons(i) = mean(lons(aa));
       int_data(:,i) = binned';
