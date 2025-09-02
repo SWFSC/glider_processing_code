@@ -80,8 +80,18 @@ glider_datenum1 = epoch2datenum(subset(:,1)) ;
  
  [near_idx,near_dist] = nearestpoint(uni_dates, glider_datenum1);
  
-
  Uniq_prfiles = unique(subset(near_idx,2));
+
+% preallocate 
+n_profiles = length(Uniq_prfiles);
+n_depth_bins = size(int_data, 1);  % Same as length(zbins)-1
+prfl_abc = NaN(n_depth_bins, n_profiles);       % Preallocate with NaNs
+num_pings_profil = NaN(1, n_profiles);        % Integer counts
+avg_profile_num  = NaN(1, n_profiles);
+avg_time         = NaN(1, n_profiles);
+avg_lat          = NaN(1, n_profiles);
+avg_lon          = NaN(1, n_profiles);
+
  
  for ii = 1:length(Uniq_prfiles)
      aa = find(subset(near_idx,2)==Uniq_prfiles(ii) );
@@ -117,7 +127,7 @@ c.Label.String = ' Log ABC';
 xlabel('Profile number')
 ylabel('Depth')
 title('Log acoustics')
-ylim([-26 -8])
+%ylim([-26 -8])
 
 figure(3)
 plot(avg_profile_num,num_pings_profil,'.')

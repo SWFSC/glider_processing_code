@@ -85,7 +85,8 @@ title('bubble plot of 120kHz density gm2')
 
 
 %% Density and biomass estimates
-nasc_int = sum(clean,"omitnan");
+% nasc_int = sum(clean,"omitnan");
+nasc_int = sum(clean(1:50,:), "omitnan"); % for first 250m only
 %nasc_int = sum(clean(2:201,3:end),"omitnan"); % why remove the first 2
 %dives?
 %nasc_int(nasc_int==0) = NaN; % amc 2/2/22 could also be an issue with schools
