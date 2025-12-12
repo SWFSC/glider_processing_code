@@ -77,7 +77,7 @@ uni_dates_120 = unique(data_120(:,1));
 % CHANGE BIN SIZES ACCORDINGLY
 
 % zbins=[0:1:1005];  %1m bins
-zbins = [0:5:1100]; %5m bins
+zbins = 0:5:1100; %5m bins
 
 % Now bin and create profiles
 % [out mn_lats mn_lons] = EVIEW_2_MATLAB( dates, depths, acoustic_data_abc, lats, lons, bins, Mean_Sv)
@@ -124,16 +124,11 @@ avg_time         = NaN(1, n_profiles);
 avg_lat          = NaN(1, n_profiles);
 avg_lon          = NaN(1, n_profiles);
 
-prfl_sv = NaN(n_depth_bins, n_profiles);
-%val_to_omit = -999; % empty data for Sv
-%is_not_999 = (sv_int_data ~=-999);
-%is_not_nan = ~isnan(sv_int_data);
-%valid_sv = is_not_nan & is_not_999; % index of Sv without Nan and -999
-z_sv_int_data = sv_int_data;
+prfl_sv = NaN(n_depth_bins, n_profiles); %preallocate
+
 sv_int_data(sv_int_data == -999) = NaN; % convert -999 to NaN
 
- 
- for ii = 1:length(Uniq_prfiles)
+  for ii = 1:length(Uniq_prfiles)
      aa = find(subset(near_idx,2)==Uniq_prfiles(ii) );
      avg_abc = mean(int_data(:,aa),2,'omitnan');          
      prfl_abc(:,ii) = avg_abc;      
@@ -145,7 +140,13 @@ sv_int_data(sv_int_data == -999) = NaN; % convert -999 to NaN
      avg_sv = mean(sv_int_data(:,aa),2,'omitnan');
      prfl_sv(:,ii) = avg_sv;
  end
- 
+ zero_abc =find(prfl_abc ==0); %find 0 in abc profiles. These will be the same for Sv
+ prfl_sv(zero_abc) = -999; % put back the -999 that were converted to NaN to use nanmean
+
+ qc = mod(avg_profile_num,1);
+ bd_prfile_idx = find(qc == 0.5);
+ prfl_abc(:,bd_prfile_idx) = NaN;
+
 % 120 kHz
  % preallocate 
 n_profiles_120 = length(Uniq_prfiles_120);
@@ -158,14 +159,9 @@ avg_lat_120          = NaN(1, n_profiles_120);
 avg_lon_120          = NaN(1, n_profiles_120);
 
 prfl_sv_120 = NaN(n_depth_bins_120, n_profiles_120);
-%val_to_omit = -999; % empty data for Sv
-%is_not_999 = (sv_int_data ~=-999);
-%is_not_nan = ~isnan(sv_int_data);
-%valid_sv = is_not_nan & is_not_999; % index of Sv without Nan and -999
-z_sv_int_data_120 = sv_int_data_120;
+
 sv_int_data_120(sv_int_data_120 == -999) = NaN; % convert -999 to NaN
 
- 
  for jj = 1:length(Uniq_prfiles)
      bb = find(subset(near_idx_120,2)==Uniq_prfiles(jj) );
      avg_abc_120 = mean(int_data_120(:,bb),2,'omitnan');          
@@ -178,12 +174,14 @@ sv_int_data_120(sv_int_data_120 == -999) = NaN; % convert -999 to NaN
      avg_sv_120 = mean(sv_int_data_120(:,bb),2,'omitnan');
      prfl_sv_120(:,jj) = avg_sv_120;
  end
-
+zero_abc_120 = find(prfl_abc_120 ==0); %find 0 in abc profiles. These will be the same for Sv
+prfl_sv_120(zero_abc_120) = -999; % put back the -999 that were converted to NaN to use nanmean
+ 
  %Now remove half profiles and other 'bad data'
- %
- qc = mod(avg_profile_num,1);
- bd_prfile_idx = find(qc == 0.5);
- prfl_abc(:,bd_prfile_idx) = NaN;
+ 
+ qc_120 = mod(avg_profile_num_120,1);
+ bd_prfile_idx_120 = find(qc_120 == 0.5);
+ prfl_abc_120(:,bd_prfile_idx_120) = NaN;
        
 %% Figures
 figure (1)
