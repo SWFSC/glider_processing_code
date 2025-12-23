@@ -162,12 +162,12 @@ prfl_sv_120 = NaN(n_depth_bins_120, n_profiles_120);
 
 sv_int_data_120(sv_int_data_120 == -999) = NaN; % convert -999 to NaN
 
- for jj = 1:length(Uniq_prfiles)
-     bb = find(subset(near_idx_120,2)==Uniq_prfiles(jj) );
+ for jj = 1:length(Uniq_prfiles_120)
+     bb = find(subset(near_idx_120,2)==Uniq_prfiles_120(jj) );
      avg_abc_120 = mean(int_data_120(:,bb),2,'omitnan');          
      prfl_abc_120(:,jj) = avg_abc_120;      
      num_pings_profil_120(jj) = length(bb);
-     avg_profile_num_120(jj) = Uniq_prfiles(jj);
+     avg_profile_num_120(jj) = Uniq_prfiles_120(jj);
      avg_time_120(jj) = mean(uni_dates_120(bb),'omitnan');
      avg_lat_120(jj) = mean(mn_lat_120(bb));
      avg_lon_120(jj) = mean(mn_lon_120(bb));
