@@ -8,6 +8,7 @@ function [Freq,seaAbs, seaC] = seaabsspeed_nc(netcd,date_ST, date_ED)
 % A Cossio 5/12/22 added frequencies from the Nortek
 % A Cossio 2/9/23 added AZFP frequencies
 % A Cossio 4/4/2025 converted from Socib mat file to NetCDF
+% A Cossio 4/20/2026 updated to generalize reading netcdfs
 
 % If no inputs are given, prompt user
 if nargin == 0
@@ -40,11 +41,16 @@ end
 netcd = fullfile(PathName,FileName); % puts the path and file name together
 ncid = netcdf.open(netcd,'NC_NOWRITE'); % Open nc file
 
-yrs = datestr(epoch2datenum(netcdf.getVar(ncid,24)),'yyyymmdd') ; % get out the date and make it a number
-dte = str2num(yrs); %convert from string to number
+% yrs = datestr(epoch2datenum(netcdf.getVar(ncid,24)),'yyyymmdd') ; % get out the date and make it a number
+% dte = str2num(yrs); 
+yrs = string(datetime(ncread(netcd, 'time'), 'ConvertFrom', 'posixtime'), 'yyyyMMdd'); % extract the date as char
+dte = str2double(yrs); %convert from string to double
 
 % data for date, temp, cond, salinity, depth
-mydata = [dte netcdf.getVar(ncid,5) netcdf.getVar(ncid,4) netcdf.getVar(ncid,7) netcdf.getVar(ncid,2)];
+% mydata = [dte netcdf.getVar(ncid,5) netcdf.getVar(ncid,4) netcdf.getVar(ncid,7) netcdf.getVar(ncid,2)];
+
+mydata = [dte ncread(netcd, 'temperature') ncread(netcd, 'conductivity') ncread(netcd, 'salinity') ncread(netcd, 'depth')];
+
 
 bb = mydata(:,1) > date_ST & mydata(:,1) < date_ED; % find data between 
 % subset of data based on date range

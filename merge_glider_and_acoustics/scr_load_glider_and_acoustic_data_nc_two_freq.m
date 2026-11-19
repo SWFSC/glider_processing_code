@@ -229,3 +229,5 @@ xlabel('Avg Profile number')
 ylabel('Number acoustic pings profile')
 title('120 kHz Number of acoustic pings per profile')
 
+figure(4)
+geoplot(avg_lat,avg_lon,'LineWidth', 1);
